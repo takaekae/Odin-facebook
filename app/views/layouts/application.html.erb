@@ -5,12 +5,27 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
+    <% if flash[:notice] %>
+      <p class="notice"><%= notice %></p>
+    <% end %>
+    <% if flash[:alert] %>
+      <p class="alert"><%= alert %></p>
+    <% end %>
+    <div class="header">
+      <% if current_user %>
+        <span>Logged in as: <%= link_to current_user.username, user_path(current_user) %></span>
+        <%= link_to "Log out", destroy_user_session_path, data: { turbo_method: :delete } %>
+        <%= link_to "Notifications - #{current_user.notifications.count}", user_notifications_path(current_user) %>
+        <%= link_to "Timeline", user_posts_path(current_user) %>
+        <%= link_to "All Users", users_path %>
+      <% end %>
+    </div>
     <%= yield %>
   </body>
 </html>

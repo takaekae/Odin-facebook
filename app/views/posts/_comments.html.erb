@@ -1,0 +1,14 @@
+<div data-controller="visibility">
+  <button data-action="visibility#toggleTargets">Show/Hide Comments</button>
+  <div data-visibility-target="hideable" hidden>
+    <% @post.comments.each do |comment| %>
+      <li><%= comment.body %> - <%= User.find(comment.user_id).username %></li>
+      <%= convert_to_eastern_time(comment.created_at) %>
+      <% if current_user == User.find(comment.user_id) %>
+        <%= link_to 'Delete Comment', [comment.post, comment], data: { turbo_method: :delete } %>
+      <% end %>
+    <% end %>
+    <p>Add Comment:</p>
+    <%= render 'posts/comment_form' %>
+  </div>
+</div>

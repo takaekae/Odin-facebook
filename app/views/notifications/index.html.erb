@@ -1,0 +1,9 @@
+<h1><%= @user.username %>'s Notifications</h1>
+
+<% @notifications.each do |notification| %>
+  <ul>
+    <li><%= notification.body %></li>
+    <%= convert_to_eastern_time(notification.created_at) %>
+    <%= link_to 'Delete notification', user_notification_path(@user, notification.id), data: { turbo_method: :delete } %>
+  </ul>
+<% end %>

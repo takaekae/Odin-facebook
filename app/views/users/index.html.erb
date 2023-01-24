@@ -1,0 +1,22 @@
+<h1>ALL USERS</h1>
+
+<% @users.each do |user| %>
+  <ul>
+    <li>
+      <% unless user.profile.blank? %>
+        <% profile = user.profile %>
+        <% if profile.avatar.attached? %>
+          <%= image_tag(profile.avatar, size: "50", style: "aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%;") %>
+        <% else %>
+          <%= image_tag(profile.picture, size: "50", style: "aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%;") %>
+        <% end %>
+        <% else %>
+          <%= image_tag("account-circle.png", size: "50", style: "aspect-ratio: 1 / 1; object-fit: cover; border-radius: 50%;") %>
+      <% end %>
+      <%= link_to user.username, user_path(user) %>
+    </li>
+    <% if current_user.invitable?(user) && current_user != user %>
+      <%= link_to 'Send Friend Request', new_user_invitation_path(user) %>
+    <% end %>
+  </ul>
+<% end %>

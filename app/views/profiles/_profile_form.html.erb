@@ -1,0 +1,18 @@
+<%= form_with model: [ @user, @user.build_profile ] do |form| %>
+  <%= form.label :name %>
+  <%= form.text_field :name, value: current_user.full_name %>
+
+  <%= form.label :age %>
+  <%= form.text_field :age %>
+
+  <%= form.label :location %>
+  <%= form.text_field :location %>
+
+  <%= form.label :picture, "Url of Profile Photo:" %>
+  <%= form.text_field :picture, value: current_user.avatar_url %>
+
+  <%= form.label :avatar, "Or Upload Profile Photo here:" %>
+  <%= form.file_field :avatar %>
+
+  <%= form.submit %>
+<% end %>

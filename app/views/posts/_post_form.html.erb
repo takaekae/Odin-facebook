@@ -1,0 +1,9 @@
+<%= form_with model: [ @user, @user.posts.build ] do |form| %>
+  <%= form.label :body %>
+  <%= form.text_field :body %><br><br>
+
+  <%= form.label :post_picture, "Optional: Attach an Image to your post" %>
+  <%= form.file_field :post_picture %>
+  <br>
+  <%= form.submit %>
+<% end %>

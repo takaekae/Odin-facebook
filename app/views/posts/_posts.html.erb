@@ -1,0 +1,26 @@
+<div>
+  <% @posts.each do |post| %>
+    <% @post = post %>
+    <ul>
+      <% unless post.post_picture.blank? %>
+        <%= image_tag(post.post_picture, size: "300") %>
+      <% end %>
+      <li><%= post.body %></li>
+      <%= User.find(post.user_id).username %>
+      <br>
+      <%= convert_to_eastern_time(post.created_at) %>
+      <br>
+      <%= render "posts/likes", post: post %>
+      <br>
+      <% if current_user.id == post.user_id %>
+        <%= link_to 'Delete Post', post_path(post), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+      <% end %>
+      <br>
+     
+    <br>
+      <ul>
+        <%= render 'posts/comments' %>
+      </ul>
+    </ul>
+  <% end %>
+</div>

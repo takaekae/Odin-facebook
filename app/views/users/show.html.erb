@@ -1,0 +1,64 @@
+<h1><%= @user.username %>'s page</h1>
+
+<%# profile %>
+<%= render partial: 'user_profile', locals: {user: @user} %>
+
+<%# send friend request %>
+<% if current_user.invitable?(@user) && current_user != @user %>
+  <%= link_to 'Send Friend Request', new_user_invitation_path(@user) %>
+<% end %>
+
+<%# add new post %>
+<% if current_user == @user %>
+  <div data-controller="visibility">
+    <button data-action="visibility#toggleTargets">New Post</button>
+    <div data-visibility-target="hideable" hidden>
+      <%= render "posts/post_form" %>
+    </div>
+  </div>
+<% end %>
+
+<%# posts %>
+<% if @user == current_user || current_user.friend_with?(@user) %>
+  <h3><%= @user.username %>'s Posts:</h3>
+  <%= render partial: 'posts/posts' %>
+<% end %>
+
+<%# friends %>
+<% unless @user.friends.blank? %>
+  <h3><%= @user.username %>'s friends:</h3>
+  <% @user.friends.each do |friend| %>
+    <ul>
+      <li><%= link_to friend.username, user_path(friend) %></li>
+      <% if current_user == @user %>
+        <% invite_id = Invitation.find_invitation(@user.id, friend.id) %>
+        <%= link_to 'Delete Friend', user_invitation_path(@user, invite_id), data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+      <% end %>
+      </ul>
+  <% end %>
+<% end %>
+
+<%# friend request management %>
+<% if current_user == @user %>
+  <h3>Pending friend requests:</h3>
+    <h5>Sent:</h5>
+      <% @user.sent_invite_to.each do |almost_friend| %>
+        <ul>
+          <li><%= link_to almost_friend.username, user_path(almost_friend) %></li>
+          <% invite_id = Invitation.find_invitation(@user.id, almost_friend.id) %>
+          <%= link_to 'Delete Sent Friend Request', user_invitation_path(@user, invite_id), data: { turbo_method: :delete } %>
+        </ul>
+      <% end %>
+    <h5>Recieved:</h5>
+      <% @user.recieved_invite_from.each do |almost_friend| %>
+        <ul>
+          <li><%= link_to almost_friend.username, user_path(almost_friend) %></li>
+          <% invite_id = Invitation.find_invitation(@user.id, almost_friend.id) %>
+          <%= link_to 'Accept Friend Request', edit_user_invitation_path(@user, invite_id) %>
+          <%= link_to 'Decline Friend Request', user_invitation_path(@user, invite_id), data: { turbo_method: :delete } %>
+        </ul>
+      <% end %>
+<% end %>
+
+
+

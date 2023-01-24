@@ -1,0 +1,9 @@
+ <%= post.likes.count %> - likes
+ 
+ <% like = post.find_like(current_user) %>
+
+<% if post.liked_by?(current_user) %>
+  <%= link_to 'Un-like', post_like_path(post, like, like: { user_id: current_user.id, post_id: post.id }), data: { turbo_method: :delete } %>
+<% else %>
+  <%= link_to 'Like', new_post_like_path(post, like: { user_id: current_user.id, post_id: post.id }) %>
+<% end %>
