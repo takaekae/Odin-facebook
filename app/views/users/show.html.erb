@@ -1,0 +1,50 @@
+<div class="columns">
+  
+  <!--profile section on left-->
+  <div class="column">
+    <section class="section"> 
+      <div class="container">
+        <div class="content">
+          <h1>Profile</h1>
+          <% if @user.profile.blank? %>
+            <p><%=@user.username%> hasn't created a profile yet</p>
+            <%= link_to("create profile", new_profile_path) if @user == current_user %>
+          <% else %>
+            <figure class="image is-256x256">
+              <%= image_tag url_for(@user.profile.avatar) %>
+            </figure>
+            <p><strong>About me</strong></p>
+            <p><%= @user.profile.intro %></p>
+            <p><strong>Location</strong></p>
+            <p><%= @user.profile.location %></p>
+
+            <%= link_to("update profile", edit_profile_path) if @user == current_user %>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!--user's posts in center-->
+  <div class="column is-three-fifths">
+    <%= render "posts/new_post_form" if @user == current_user %>
+    <section class="section">
+      <div class="content">
+        <h1><%= @user.username %>'s Posts</h1>
+        <% @posts.each do |post| %>
+          <%= render "posts/post_media", post: post %>
+        <% end %>
+      </div>
+    </section>
+  </div>
+
+  <!--friends bar on right-->
+  <div class="column">
+    <%= render "friends" %>
+    <% if @user == current_user %>
+      <%= render "friend_requests" %>
+      <%= render "find_friends" %>
+    <% end %>
+  </div>
+
+</div>

@@ -1,0 +1,62 @@
+<% unless current_user.sent_friend_requests.empty? & current_user.received_friend_requests.empty? %>
+  <section class="section">
+    <div class="container">
+      <div class="content">
+        <h1>Friend Requests</h1>
+        <% unless current_user.sent_friend_requests.empty? %>
+          <p class="subtitle">Sent Friend Requests</p>
+            <% current_user.sent_friend_requests.each do |request| %>
+                <div class="level">
+                  <!-- Left side -->
+                  <div class="level-left">
+                    <div class="level-item">
+                      <p class="image is-square is-48x48">
+                        <%= image_tag(profile_pic(request.requested_friend), class: "is-rounded") %>
+                      </p>
+                    </div>
+                    <div class="level-item">
+                      <p><strong><%= link_to request.requested_friend.username, request.requested_friend %></strong></p>
+                    </div>
+                  </div>
+                  <!-- Right side -->
+                  <div class="level-right">
+                    <p class="level-item">
+                      <%= link_to "Cancel", request_path(request.id), method: :delete, class: "button is-warning" %>
+                    </p>
+                  </div>
+                </div>
+            <% end %>
+        <% end %>
+        <% unless current_user.received_friend_requests.empty? %>
+          <p class="subtitle">Received</p>
+            <% current_user.received_friend_requests.each do |request| %>
+                <div class="level">
+                  <!-- Left side -->
+                  <div class="level-left">
+                    <div class="level-item">
+                      <p class="image is-square is-48x48">
+                        <%= image_tag(profile_pic(request.requesting_friend), class: "is-rounded") %>
+                      </p>
+                    </div>
+                    <div class="level-item">
+                      <p><strong><%= link_to request.requesting_friend.username, request.requesting_friend %></strong></p>
+                    </div>
+                  </div>
+
+                  <!-- Right side -->
+                  <div class="level-right">
+                    <p class="level-item">
+                      <%= form_for :friendship, url: friendships_path do |f| %>
+                        <%= hidden_field_tag(:request_id, request.id) %>
+                        <%= f.submit "Accept", class: "button is-success" %>
+                      <!-- deny button only on see more page due to room? -->
+                      <% end %>
+                    </p>
+                  </div>
+                </div>
+            <% end %>
+        <% end %>
+      </div>
+    </div>
+  </section>
+<% end %>

@@ -1,0 +1,24 @@
+<article class="media">
+  <figure class="media-left">
+    <p class="image is-square is-48x48">
+      <%= image_tag(profile_pic(current_user), class: "is-rounded") %>
+    </p>
+  </figure>
+  <div class="media-content">
+    <%= form_for @comment do |f| %>
+      <div class="field">
+        <div class="control">
+          <%= f.text_area :body, autofocus: true, placeholder: "Add comment here...", class: "textarea", rows: 2 %>
+          <%= f.hidden_field :post_id, value: post.id %>
+        </div>
+      </div>
+      <nav class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <%= f.submit "Submit", class: "button is-link" %> 
+          </div>
+        </div>
+      </nav>
+    <% end %>
+  </div>
+</article>

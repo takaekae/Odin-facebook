@@ -1,0 +1,67 @@
+    <nav class="navbar is-info">
+      <div class="navbar-brand">
+        <%= link_to image_tag("logo.png", size: "3 rem"), root_path, :class => "navbar-item" %>
+        <div class="navbar-item">
+          <p class="title is-4" id="navbar-title">odinbook</p>
+        </div>
+      </div>
+
+      <div class="navbar-menu">
+        <div class="navbar-start"> <!--left side of navbar -->
+            <%= link_to "Home", root_path, class: "navbar-item" %>
+        </div>
+
+        <div class="navbar-end"> <!--right side of navbar -->
+          <% if user_signed_in? %>
+            <div class="navbar-item">
+              <p>Signed in as <em><%= current_user.username %></em></p>
+            </div>
+            <div class="navbar-item has-dropdown is-hoverable"> <!--notifications -->
+              <a class="navbar-link">
+                <%= current_user.received_friend_requests.empty? ? fa_icon("bell", class: "icon is-small") : fa_icon("bell", class: "icon is-small active-notification") %>
+              </a>
+              <div class="navbar-dropdown">
+                <% unless current_user.received_friend_requests.empty? %>
+                  <% current_user.received_friend_requests.each do |request| %>
+                    <div class="navbar-item">
+                      <div class="level">
+                        <!-- Left side -->
+                        <div class="level-left">
+                          <div class="level-item">
+                            <%= image_tag("default_avatar.png", size: "30x60") %>
+                          </div>
+                          <div class="level-item">
+                            <p><strong><%= request.requesting_friend.username %></strong></p>
+                          </div>
+                        </div>
+
+                        <!-- Right side -->
+                        <div class="level-right">
+                          <p class="level-item">
+                            <%= form_for :friendship, url: friendships_path do |f| %>
+                              <%= hidden_field_tag(:request_id, request.id) %>
+                              <%= f.submit "Accept", class: "button is-success is-small" %>
+                            <!-- deny button only on see more page due to room? -->
+                            <% end %>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                <% end %>
+                <hr class="navbar-divider">
+                <a class="navbar-item">
+                  Go to notifications
+                </a>
+              </div>
+            </div>
+            <%= link_to "Profile", user_path(current_user.id), class: "navbar-item" %>
+            <%= button_to "Sign Out", destroy_user_session_path, method: :delete, class: "navbar-item" %>
+          <% else %>
+            <%= link_to "Sign Up", new_user_registration_path, class: "navbar-item" %>
+            <%= link_to "Sign In", new_user_session_path, class: "navbar-item" %>
+
+          <% end %>
+        </div>
+      </div>
+    </nav>

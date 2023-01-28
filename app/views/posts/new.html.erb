@@ -1,0 +1,37 @@
+<section class="section">
+  <div class="container">
+    <div class="content">
+      <h1>Share An Image</h1>
+        <%= form_with scope: :post, url: posts_path do |f| %>
+          <%= f.hidden_field :post_type, value: "image" %>
+          <div class="field">
+            <%= f.label "Title", class: "label" %>
+            <div class="control">
+              <%= f.text_field :title, autofocus: true, class: "input", placeholder: "Title for your post", required: true %>
+            </div>
+          </div>
+          <div class="field">
+            <%= f.label "Link to image", class: "label" %>
+            <div class="control">
+              <%= f.text_field :img_url, class: "input", placeholder: "Add a link to an image, or upload your own (but not both)" %>
+            </div>
+          </div>
+          <div class="field">
+            <%= f.label "Upload image", class: "label" %>
+            <div class="control">
+              <%= f.file_field :image %>
+            </div>
+          </div>
+          <br>
+          <div class="field is-grouped">
+            <div class="control">
+              <%= f.submit "Submit", class: "button is-link" %>
+            </div>
+            <div class="control">
+              <%= link_to "Cancel", user_path(current_user), class: "button is-link is-light" %>
+            </div>
+          </div>
+        <% end %>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,37 @@
+<div class="section">
+  <div class="container">
+    <div class="box">
+      <h2 class="title">Update Profile</h2>
+
+      <%= form_for @profile do |f| %>
+        <div class="field">
+          <%= f.label "About me", class: "label" %>
+          <div class="control">
+            <%= f.text_area :intro, autofocus: true, class: "input" %>
+          </div>
+        </div>
+        <div class="field">
+          <%= f.label :location, class: "label" %>
+          <div class="control">
+            <%= f.text_field :location, autofocus: true, class: "input" %>
+          </div>
+        </div>
+        <div class="field">
+          <%= f.label :avatar, class: "label" %>
+          <div class="control">
+            <%= f.file_field :avatar %>
+          </div>
+        </div>
+        <br>
+        <div class="field is-grouped">
+          <div class="control">
+            <%= f.submit "Submit", class: "button is-link" %>
+          </div>
+          <div class="control">
+            <%= link_to "Cancel", user_path(current_user), class: "button is-link is-light" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

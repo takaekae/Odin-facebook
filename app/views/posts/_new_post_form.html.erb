@@ -1,0 +1,40 @@
+<section class="section">
+  <div class="container">
+    <div class="content">
+      <h1>Share Your Thoughts</h1>
+      <div class="box">
+        <article class="media">
+          <figure class="media-left">
+              <p class="image is-square is-64x64">
+                <%= image_tag profile_pic(current_user), class: "is-rounded" %>
+              </p>
+          </figure>
+          <div class="media-content">
+            <%= form_with scope: :post, url: posts_path do |f| %>
+              <div class="field">
+                <div class="control">
+                  <%= f.text_field :title, autofocus: true, placeholder: "New post title", class: "input", required: true %>
+                </div>
+              </div>
+              <div class="field">
+                <div class="control">
+                  <%= f.text_area :body, autofocus: true, placeholder: "New post content...", class: "textarea", required: true %>
+                </div>
+              </div>
+              <nav class="level">
+                <div class="level-left">
+                  <div class="level-item">
+                    <%= f.submit "Submit", class: "button is-link" %>
+                  </div>
+                  <div class="level-item">
+                    <%= link_to "Post an Image", new_post_path, class: "button is-link is-light" %>
+                  </div>
+                </div>
+              </nav>
+            <% end %>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>

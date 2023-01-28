@@ -1,0 +1,20 @@
+<article class="media">
+  <figure class="media-left mb-0">
+    <p class="image is-square is-48x48">
+      <%= image_tag(profile_pic(comment.user), class: "is-rounded") %>
+    </p>
+  </figure>
+  <div class="media-content">
+    <div class="content">
+      <p>
+        <strong><%= link_to "@" + comment.user.username, comment.user %></strong><br>
+        <%= comment.body %>
+      </p>
+    </div>
+  </div>
+  <% if comment.user == current_user %>
+    <div class="media-right">
+        <%= link_to fa_icon("trash"), comment_path(comment), method: "delete", class: "icon is-small" %>
+    </div>
+  <% end %>
+</article>

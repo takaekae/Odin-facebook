@@ -1,0 +1,24 @@
+<% unless @user.friends.empty? %>
+  <section class="section"> 
+    <div class="container">
+      <div class="content">
+        <h1>Friends</h1>
+            <% @user.friends.each do |friend| %>
+                <div class="level">
+                  <!-- Left side -->
+                  <div class="level-left">
+                    <div class="level-item">
+                      <p class="image is-square is-48x48">
+                        <%= image_tag(profile_pic(friend), class: "is-rounded") %>
+                      </p>
+                    </div>
+                    <div class="level-item">
+                      <p><strong><%= link_to friend.username, friend %></strong></p>
+                    </div>
+                  </div>
+                </div>
+            <% end %>
+      </div>
+    </div>
+  </section>
+<% end %>

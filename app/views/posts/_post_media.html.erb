@@ -1,0 +1,64 @@
+<div class="box">
+  <article class="media">
+    <figure class="media-left">
+      <p class="image is-square is-64x64">
+        <%= image_tag(profile_pic(post.user), class: "is-rounded") %>
+      </p>
+    </figure>
+    <div class="media-content">
+      <div class="content">
+        <p>
+          <strong><%= post.title %></strong> <small><%= link_to post.user.username, post.user %></small> <small><%= time_ago_in_words(post.created_at) %> ago</small>
+          <br>
+          <% if post.postable.class == ImagePost %>
+            <figure class="image">
+              <% if post.postable.img_url.present? %>
+                <%= image_tag post.postable.img_url %>
+              <% else %>
+                <%= image_tag post.postable.image %>
+              <% end %>
+            </figure>
+          <% else %>
+            <%= post.postable.body %>
+          <% end %>
+        </p>
+      </div>
+      <!-- controls for own posts -->
+      <% if post.user != current_user %>
+      <nav class="level is-mobile">
+        <div class="level-left">
+          <a class="level-item">
+            <% if post.likes.find_by(user_id: current_user.id) %>
+              <%= link_to fa_icon("heart"), like_path(post.likes.find_by(user_id: current_user.id)), method: "delete", class: "icon is-small" %>
+            <% else %>
+              <%= link_to fa_icon("heart-o"), likes_path(:like => {:post_id => post.id}), method: "post", class: "icon is-small" %>
+            <% end %>
+          </a>
+        </div>
+      </nav>
+      <% end %>
+
+      <!-- comments section here -->
+      <% post.comments.each do |comment| %>
+        <%= render "posts/comment", comment: comment %>
+      <% end %>
+      <%= render "posts/comment_form", post: post %>
+
+    </div>
+    <% unless post.likes.count() == 0 %>
+      <div class="media-right">
+          <span class="icon-text has-text-dark">
+            <span class="icon">
+              <i class="fa fa-heart"></i>
+            </span>
+            <span><%= post.likes.count() %></span>
+          </span>
+      </div>
+    <% end %>
+    <% if post.user == current_user %>
+    <div class="media-right">
+        <%= link_to fa_icon("trash"), post_path(post), method: "delete", class: "icon is-small" %>
+    </div>
+  <% end %>
+  </article>
+</div>

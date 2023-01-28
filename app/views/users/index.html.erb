@@ -1,0 +1,47 @@
+<section class="section">
+  <div class="container">
+    <div class="box">
+      <div class="content">
+        <h1>Find People</h1>
+        <% @users.each do |user| %>
+          <% unless user == current_user  %>
+            <div class="level">
+              <!-- Left side -->
+              <div class="level-left">
+                <div class="level-item">
+                  <%= image_tag("default_avatar.png", size: "60x100") %>
+                </div>
+                <div class="level-item">
+                  <p><strong><%= link_to user.username, user %></strong></p>
+                </div>
+              </div>
+
+              <!-- Right side -->
+              <div class="level-right">
+                <p class="level-item">
+                  <% if current_user.friends.include?(user) %>
+                    <!--delete friend -->
+                    <%= link_to "Remove Friend", friendship_path(current_user.friendships.find_by(friend_id: user.id)), method: :delete, class: "button is-danger" %>
+
+                  <% elsif current_user.requested_friends.include?(user) %>
+                    <%= link_to "Cancel Invite", request_path(current_user.sent_friend_requests.find_by(requested_friend_id: user.id)), method: :delete, class: "button is-warning" %>
+
+                  <% elsif current_user.requesting_friends.include?(user) %>
+                    <%= form_for :friendship, url: friendships_path do |f| %>
+                      <%= hidden_field_tag(:request_id, current_user.received_friend_requests.find_by(requesting_friend_id: user.id).id) %>
+                      <%= f.submit "Accept", class: "button is-success" %>
+                      <%= link_to "Reject Invite", request_path(current_user.received_friend_requests.find_by(requesting_friend_id: user.id)), method: :delete, class: "button is-warning" %>
+                    <% end %>
+
+                  <% else %> <!-- not a friend -->
+                    <%= link_to "Invite", requests_path(:invitee => user.id), :method => :post, class: "button is-success" %>
+                  <% end %>
+                </p>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+    </div>
+    </div>
+  </div>
+</section>
